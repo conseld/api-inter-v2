@@ -28,10 +28,16 @@ Rate limit: 120 chamadas por minuto
         $boletoPDF = $bankingInter->boletoPDFPix($codigoCobranca);
         // print_r($boletoPDF);
         // echo $boletoPDF->pdf;
+
         $pdf = base64_decode($boletoPDF['response']->pdf);
 
-        header('Content-Type: application/pdf');
-        echo $pdf;
+          header('Content-Type: application/pdf');
+          header('Content-Disposition: inline; filename="boleto-nome-cliente.pdf"');
+          header('Content-Transfer-Encoding: binary');
+          header('Content-Length: ' . strlen($pdf));
+          header('Accept-Ranges: bytes');
+          echo $pdf;
+
     } catch (\Exception $e) {
         echo $e->getMessage();
     }
